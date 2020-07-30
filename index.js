@@ -126,11 +126,21 @@ class Slider {
     this.progressBar = this.progressInterval
   }
   start() {
+    this.button.disabled = true;
+
+    this.image.src = this.arr[this.i];
+    this.container.appendChild(this.image);
+    this.progress.value = this.progressBar;
+    this.progressBar += this.progressInterval;
+    this.i--
+
+
     this.interval = setInterval(() => {
       this.container.innerHTML = ""
       if (this.i < 0) {
         clearInterval(this.interval);
         this.progress.value = 0;
+        this.button.disabled = false
       }
       else {
         this.image.src = this.arr[this.i];
@@ -183,7 +193,7 @@ class Slider1 {
     return this
   }
   next() {
-    this.container.innerHTML = ""
+    this.container.innerHTML = "";
     let num = this.start;
     if (num <= this.end) {
       this.start++;
@@ -192,13 +202,19 @@ class Slider1 {
       return {done: false, value: this.container.appendChild(this.image)}
 
     } else {
-      this.progress.value = 0
+      this.progress.value = 0;
+      this.button.disabled = false
       return {done: true, value: undefined}
     }
   }
   click(){
     let interval = null;
     this.button.addEventListener("click", () => {
+      this.button.disabled = true;
+      this.image.src = this.arr[0];
+      this.container.appendChild(this.image);
+      this.progress.value = this.progressInterval;
+      this.start++;
       interval = setInterval(() => {
         this.next();
       }, this.input.value*1000);
