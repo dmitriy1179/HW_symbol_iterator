@@ -94,35 +94,6 @@ console.log(month.next().value)
 console.log(month.next().value)
 
 //2 Stories
-function progressBar(time, container) {
-  let curTime = 0
-  const progress = document.createElement("progress");
-  progress.setAttribute("style", "width: 50px; margin: 5px");
-  container.appendChild(progress);
-  progress.max = time;
-  let intervalID =  setInterval(() => {
-    progress.value = curTime;
-    curTime += 10;
-    if(curTime === time) {
-      clearInterval(intervalID);
-    }
-  }, 10);
-  return {
-    stop: function() {
-      clearInterval(intervalID);
-    },
-    start: function() {
-      intervalID =  setInterval(() => {
-        progress.value = curTime;
-        curTime += 10;
-        if(curTime === time) {
-          clearInterval(intervalID);
-        }
-      }, 10);
-    }
-  }
-}
-
 const images = [
   "images/img-05.jpg",
   "images/img-06.jpg",
@@ -139,11 +110,72 @@ const input = document.getElementById("input");
 const button = document.getElementById("btn");
 const el = document.getElementById("el");
 el.setAttribute("style", "margin: 0 auto; padding: 10px; text-align: center;")
-const progressBarItem = document.getElementById("progressBar")
-progressBarItem.setAttribute("style", "margin: 0 auto; padding: 10px; text-align: center;")
-
+const progress = document.getElementById("progress")
+/*
 class Slider {
-  constructor (arr, input, button, container) {
+  constructor (arr, input, button, container, progress) {
+    this.arr = arr
+    this.input = input;
+    this.button = button;
+    this.container = container;
+    this.interval = null;
+    this.i = this.arr.length-1;
+    this.image = document.createElement("img");
+    this.progress = progress;
+    this.progressInterval = 100/this.arr.length;
+    this.progressBar = this.progressInterval
+  }
+  start() {
+    this.interval = setInterval(() => {
+      this.container.innerHTML = ""
+      if (this.i < 0) {
+        clearInterval(this.interval);
+        this.progress.value = 0;
+        this.button.disabled = false
+      }
+      else {
+        this.image.src = this.arr[this.i];
+        this.container.appendChild(this.image);
+        this.progress.value = this.progressBar;
+      }
+      this.progressBar += this.progressInterval;
+      this.i--;
+    }, this.input.value * 1000);
+  }
+  stop() {
+    clearInterval(this.interval);
+  }
+  click() {
+    this.button.addEventListener("click", () => {
+      this.button.disabled = true;
+      this.image.src = this.arr[this.i];
+      this.container.appendChild(this.image);
+      this.progress.value = this.progressBar;
+      this.progressBar += this.progressInterval;
+      this.i--
+      this.start();
+    });
+    this.image.addEventListener("mousedown", () => {
+      this.stop();
+    })
+    this.image.addEventListener("mouseup", () => {
+      this.start();
+    }) 
+    this.image.addEventListener("mouseenter", () => {
+      this.stop();
+    })
+    this.image.addEventListener("mouseleave", () => {
+      this.start();
+    });
+  }
+
+}
+const slide = new Slider(images, input, button, el, progress)
+slide.click()
+*/
+
+class Slider1 {
+  constructor (arr, input, button, container, progress) {
     this.arr = arr
     this.input = input;
     this.button = button;
@@ -151,9 +183,8 @@ class Slider {
     this.start = 0;
     this.end = this.arr.length-1
     this.image = document.createElement("img");
-    this.bar = null;
-    this.interval = null;
-
+    this.progress = progress;
+    this.progressInterval = 100/this.arr.length;
   }
   [Symbol.iterator](){
     return this
@@ -164,48 +195,44 @@ class Slider {
     if (num <= this.end) {
       this.start++;
       this.image.src = this.arr[num];
-      this.bar = progressBar(this.input.value * 1000, progressBarItem)
+      this.progress.value += this.progressInterval
       return {done: false, value: this.container.appendChild(this.image)}
 
     } else {
-      this.button.disabled = false;
-      progressBarItem.innerHTML = "";
+      this.progress.value = 0;
+      this.button.disabled = false
       return {done: true, value: undefined}
     }
   }
   click(){
-    this.interval = null;
+    let interval = null;
     this.button.addEventListener("click", () => {
       this.button.disabled = true;
-      this.bar = progressBar(this.input.value * 1000, progressBarItem)
       this.image.src = this.arr[0];
       this.container.appendChild(this.image);
+      this.progress.value = this.progressInterval;
       this.start++;
-      this.interval = setInterval(() => {
+      interval = setInterval(() => {
         this.next();
       }, this.input.value*1000);
     });
     this.image.addEventListener("mousedown", () => {
-      clearInterval(this.interval);
-      this.bar.stop();
+      clearInterval(interval)
     })
     this.image.addEventListener("mouseup", () => {
-      this.interval = setInterval(() => {
+      interval = setInterval(() => {
         this.next();
       }, this.input.value*1000);
-      this.bar.start();
     });
     this.image.addEventListener("mouseenter", () => {
-      clearInterval(this.interval);
-      this.bar.stop();
+      clearInterval(interval)
     })
     this.image.addEventListener("mouseleave", () => {
-      this.interval = setInterval(() => {
+      interval = setInterval(() => {
         this.next();
       }, this.input.value*1000);
-      this.bar.start();
     });
   }
 }
-const slide = new Slider(images, input, button, el)
-slide.click()
+const slide1 = new Slider1(images, input, button, el, progress)
+slide1.click()
