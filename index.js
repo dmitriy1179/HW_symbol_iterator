@@ -190,14 +190,14 @@ class Slider {
         this.i--
         this.start();
     });
-    this.container.addEventListener("mouseup", () => {
+    this.image.addEventListener("mouseup", () => {
       if (this.isMouseDown === true) {
         this.stop();
         this.curTimeBar = this.bar.progressStop();
         this.isMouseDown = false;
       }
     })
-    this.container.addEventListener("mousedown", () => {
+    this.image.addEventListener("mousedown", () => {
       this.start();
       this.bar.progressStart();
       this.isMouseDown = true;
