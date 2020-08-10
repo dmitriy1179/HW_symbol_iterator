@@ -155,6 +155,7 @@ class Slider {
     this.bar = null;
     this.curTimeBar = 0;
     this.isMouseDown = false;
+    this.startI = this.arr.length-1;
   }
   start() {
     this.interval = setInterval(() => {
@@ -168,6 +169,7 @@ class Slider {
         clearInterval(this.interval);
         progressBarItem.innerHTML = "";
         this.button.disabled = false;
+        this.i = this.startI;
       }
       else {
         this.image.src = this.arr[this.i];
@@ -182,7 +184,7 @@ class Slider {
   }
   
   click() {
-      this.button.addEventListener("click", () => {
+    this.button.addEventListener("click", () => {
         this.button.disabled = true;
         this.image.src = this.arr[this.i];
         this.container.appendChild(this.image);
@@ -219,102 +221,4 @@ class Slider {
 const slide = new Slider(images, input, button, el)
 slide.click()
 
-/*
-class Slider1 {
-  constructor (arr, input, button, container) {
-    this.arr = arr
-    this.input = input;
-    this.button = button;
-    this.container = container;
-    this.start = 0;
-    this.end = this.arr.length-1
-    this.image = document.createElement("img");
-    this.bar = null;
-    this.interval = null;
-    this.curTimeBar = 0;
-    this.isMouseDown = false;
-  }
-  [Symbol.iterator](){
-    return this
-  }
-  next() {
-    this.container.innerHTML = "";
-    let num = this.start;
-    if (num <= this.end) {
-      this.start++;
-      this.image.src = this.arr[num];
-      this.bar = progressBar(this.input.value * 1000, progressBarItem)
-      return {done: false, value: this.container.appendChild(this.image)}
 
-    } else {
-      this.button.disabled = false;
-      progressBarItem.innerHTML = "";
-      return {done: true, value: undefined}
-    }
-  }
-  click(){
-    this.button.addEventListener("click", () => {
-      this.button.disabled = true;
-      this.bar = progressBar(this.input.value * 1000, progressBarItem)
-      this.image.src = this.arr[0];
-      this.container.appendChild(this.image);
-      this.start++;
-      this.interval = setInterval(() => {
-        if (this.curTimeBar !== 0) {
-          this.curTimeBar = 0;
-          clearInterval(this.interval)
-          this.interval = setInterval(() => {
-            this.next();
-          }, this.time = this.input.value * 1000 - this.curTimeBar);
-        }
-        this.next();
-      }, this.time = this.input.value * 1000 - this.curTimeBar);
-    });
-    this.image.addEventListener("mouseup", () => {
-      if (this.isMouseDown === true) {
-        clearInterval(this.interval);
-        this.curTimeBar = this.bar.progressStop();
-        this.isMouseDown = false;
-      }
-    })
-    this.image.addEventListener("mousedown", () => {
-      this.interval = setInterval(() => {
-        if (this.curTimeBar !== 0) {
-          this.curTimeBar = 0;
-          clearInterval(this.interval)
-          this.interval = setInterval(() => {
-            this.next();
-          }, this.time = this.input.value * 1000);
-        }
-        this.next();
-      }, this.time = this.input.value * 1000 - this.curTimeBar);
-      this.bar.progressStart();
-      this.isMouseDown = true
-    });
-    
-    this.image.addEventListener("mouseenter", () => {
-      if (this.isMouseDown === false) {
-        clearInterval(this.interval);
-        this.curTimeBar = this.bar.progressStop();
-      }
-    })
-    this.image.addEventListener("mouseleave", () => {
-      if (this.isMouseDown === false) {
-        this.interval = setInterval(() => {
-          if (this.curTimeBar !== 0) {
-            this.curTimeBar = 0;
-            clearInterval(this.interval)
-            this.interval = setInterval(() => {
-              this.next();
-            }, this.time = this.input.value * 1000);
-          }
-          this.next();
-        }, this.time = this.input.value * 1000 - this.curTimeBar);
-        this.bar.progressStart();
-      }  
-    });
-  }
-}
-const slide1 = new Slider1(images, input, button, el)
-slide1.click()
-*/
