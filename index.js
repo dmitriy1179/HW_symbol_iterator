@@ -155,7 +155,7 @@ class Slider {
     this.bar = null;
     this.curTimeBar = 0;
     this.isMouseDown = false;
-    this.startI = this.arr.length-1;
+    this.startI = this.arr.length;
   }
   start() {
     this.interval = setInterval(() => {
@@ -169,7 +169,9 @@ class Slider {
         clearInterval(this.interval);
         progressBarItem.innerHTML = "";
         this.button.disabled = false;
+        this.input.value = "";
         this.i = this.startI;
+        this.isMouseDown = false;
       }
       else {
         this.image.src = this.arr[this.i];
@@ -185,12 +187,12 @@ class Slider {
   
   click() {
     this.button.addEventListener("click", () => {
-        this.button.disabled = true;
-        this.image.src = this.arr[this.i];
-        this.container.appendChild(this.image);
-        this.bar = progressBar(this.input.value * 1000, progressBarItem)
-        this.i--
-        this.start();
+      this.button.disabled = true;
+      this.image.src = this.arr[this.i];
+      this.container.appendChild(this.image);
+      this.bar = progressBar(this.input.value * 1000, progressBarItem)
+      this.i--
+      this.start();
     });
     this.image.addEventListener("mouseup", () => {
       if (this.isMouseDown === true) {
@@ -220,5 +222,4 @@ class Slider {
 }
 const slide = new Slider(images, input, button, el)
 slide.click()
-
 
